@@ -1,21 +1,3 @@
-/* FILE: A3_solutions.c is where you will code your answers for Assignment 3.
- * 
- * Each of the functions below can be considered a start for you. They have 
- * the correct specification and are set up correctly with the header file to
- * be run by the tester programs.  
- *
- * You should leave all of the code as is, especially making sure not to change
- * any return types, function name, or argument lists, as this will break
- * the automated testing. 
- *
- * Your code should only go within the sections surrounded by
- * comments like "REPLACE EVERTHING FROM HERE... TO HERE.
- *
- * The assignment document and the header A3_solutions.h should help
- * to find out how to complete and test the functions. Good luck!
- *
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,7 +30,7 @@ bmp_open( char* bmp_filename,        unsigned int *width,
         img_data = (unsigned char*) malloc(sizeof(char)*(*data_size));
 
 	if (fread (img_data, 1, *data_size, bmpfile) != *data_size){
-		printf("Blah, %d.\n", *data_size);
+		printf("Data size is %d.\n", *data_size);
 	}
 	*data_offset=*(unsigned int*)(img_data+10);
         // width
@@ -58,10 +40,9 @@ bmp_open( char* bmp_filename,        unsigned int *width,
         //bits per pixel
        	*bits_per_pixel = *(unsigned short int*)(img_data+28);
         //padding
-        int nColours= (*bits_per_pixel/8); //4
+        int nColours= (*bits_per_pixel/8); 
         *padding =  ((4-(*width * nColours)%4)%4);
 
- 
   // TO HERE!  
   return img_data;  
 }
@@ -82,6 +63,7 @@ bmp_scale( unsigned char*** pixel_array, unsigned char* header_data, unsigned in
 {
   unsigned char*** new_pixel_array = NULL; 
   // REPLACE EVERYTHING FROM HERE
+//update width and height
 	int newWidth = (*width)*scale;
 	int newHeight = (*height)*scale;
 	*((unsigned int*)(header_data +18))= newWidth;
@@ -130,46 +112,40 @@ bmp_collage( char* background_image_filename,     char* foreground_image_filenam
 
 // open bg, and bmp to 3D
 //bmp to 3D calls bmpopen itself
-unsigned char** bgheaderdata;
-unsigned int* bghsize;
-unsigned int* bgwidth;
-unsigned int* bgheight;
-unsigned int * bgnumc;
-unsigned char***bgarray= bmp_to_3D_array( background_image_filename, bgheaderdata, bghsize, bgwidth, bgheight, bgnumc);
+
+unsigned char* bgheaderdata;
+unsigned int bghsize;
+unsigned int bgwidth;
+unsigned int bgheight;
+unsigned int bgnumc;
+unsigned char***bgarray= bmp_to_3D_array( background_image_filename, &bgheaderdata, &bghsize, &bgwidth, &bgheight, &bgnumc);
 
 //open fg, bmp  to 3D
-unsigned char** fgheaderdata;
-unsigned int* fghsize;
-unsigned int* fgwidth;
-unsigned int* fgheight;
-unsigned int * fgnumc;
-unsigned char***fgarray= bmp_to_3D_array( foreground_image_filename, fgheaderdata, fghsize, fgwidth, fgheight, fgnumc);
+unsigned char* fgheaderdata;
+unsigned int fghsize;
+unsigned int fgwidth;
+unsigned int fgheight;
+unsigned int fgnumc;
+unsigned char***fgarray= bmp_to_3D_array( foreground_image_filename, &fgheaderdata, &fghsize, &fgwidth, &fgheight, &fgnumc);
 
 //check colours
-if( *bgnumc != 4 || *fgnumc != 4){
+if( bgnumc != 4 || fgnumc != 4){
 	printf("ERROR: The image(s) have an incorrect amound of colours\n");	
 	return -1;
 }
 //and scale fg
-
-unsigned char*** scaledfg = bmp_scale(fgarray, *fgheaderdata, *fghsize, fgwidth, fgheight, *fgnumc, scale); 
-
-//calculate file sizes
-
-unsigned int * fgfinalsize = (unsigned int*) (fgheaderdata+2);
-unsigned int paddingc = (4- (((*bgwidth)*(*bgnumc))%4))%4;
-unsigned int bgfinalsize = *bghsize+((*bgwidth)*(*bgnumc)+paddingc)*(*bgheight);
+unsigned char*** scaledfg = bmp_scale(fgarray, fgheaderdata, fghsize, &fgwidth, &fgheight, fgnumc, scale); 
 
 	//and check that foreground is smaller
-	if (*fgfinalsize >= bgfinalsize){
+	if (*fgheaderdata >= bghsize){
 		printf("ERROR: The foreground image should be smaller than the background\n");
 		return -1;
 	}
 //now overlay the pixels
-	for (int r = row_offset; r < (*fgheight +row_offset); r++){
-		for (int c = col_offset; c< (*fgwidth + col_offset); c++){
-			if ( scaledfg[r-row_offset][c-col_offset][0] != 0){
-			for (int colour =1; colour <= *fgnumc; colour++){
+	for (int r = row_offset; r < (fgheight +row_offset); r++){
+		for (int c = col_offset; c< (fgwidth + col_offset); c++){
+			for(int colour = 0; colour <fgnumc; colour++){
+			if ( scaledfg[r-row_offset][c-col_offset][colour] != 0){
 				bgarray[r][c][colour]= scaledfg[r-row_offset][c-col_offset][colour];
 				}
 			}
@@ -177,8 +153,8 @@ unsigned int bgfinalsize = *bghsize+((*bgwidth)*(*bgnumc)+paddingc)*(*bgheight);
 	}
 
 //write result in output image
-int write= bmp_from_3D_array(output_collage_image_filename, *bgheaderdata, *bghsize, bgarray, *bgwidth, *bgheight, *bgnumc);
- 
+int write= bmp_from_3D_array(output_collage_image_filename, bgheaderdata, bghsize, bgarray, bgwidth, bgheight, bgnumc);
+
 if(write ==-1){
  printf("Image could not be written\n");
 	return -1;
