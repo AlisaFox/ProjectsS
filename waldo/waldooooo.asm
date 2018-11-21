@@ -1,6 +1,4 @@
-#GAGINA
-#Alisa
-#260770497
+
 .data
 displayBuffer:  .space 0x40000 # space for 512x256 bitmap display 
 errorBuffer:    .space 0x40000 # space to store match function
