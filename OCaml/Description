@@ -1,0 +1,13 @@
+Started learning OCaml winter 2019. Started off with studying recursion and playing around with exponentation (ex. rpe)
+# let even n = (n mod 2) = 0;;
+# let odd n = (n mod 2) = 1;;
+# let rec rpe base power =
+if base = 0 then 0
+else
+if power = 0 then 1
+else
+if (odd power) then
+base * (rpe base (power - 1))
+else
+let tmp = (rpe base (power/2)) in
+tmp * tmp;;
