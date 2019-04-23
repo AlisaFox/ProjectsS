@@ -1,3 +1,11 @@
+let close ((x: float), (y: float)) = abs_float (x -. y) < 0.0001;;
+
+let square (x: float) = x *. x;;
+
+let cube (x:float) = x *. x*. x;;
+
+let odd n = (n mod 2) = 1;;
+
 let mysqrt (x:float) = 
   let rec iterate g =
     let g2 = square g in
