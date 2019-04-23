@@ -1,3 +1,27 @@
+type country = string;;
+type chart = (country * country) list;;
+type colour = country list;;
+type colouring = colour list;;
+
+(*
+Notice that this is a mutually recursive definition. 
+Each type mentions the other one. 
+The keyword "and" is used for mutually recursive definitions.
+*)
+
+type cell = { data : int; next : rlist}
+and rlist = cell option ref;;
+
+(* This converts an RList to an ordinary list. *)
+let rec displayList (c : rlist) =
+  match !c with
+    | None -> []
+    | Some { data = d; next = l } -> d :: (displayList l);;
+
+let cell2rlist (c:cell):rlist = ref (Some c);;
+
+let smaller ((x:int), (y:int)) = x < y;;
+let bigger ((x: int), (y: int)) = x > y;;
 (* Question 1.1 *)
 
 let areNeighbours ct1 ct2 (cht : chart) =
