@@ -1,4 +1,4 @@
-# ProjectsS
+# The Mess
 
-Also known as various projects created by a bored student
-(Really, there is nothing interesting here)
+Called so because it is literally a mess. I will try and make things clear in this README, but the individual folders most likely won't
+have their own. 
