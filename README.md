@@ -16,14 +16,17 @@ the lines of overlaying two images by using bitmap images
 ## 4. Circuits
 Here I designined and simulated logic circuits. Files to be opened with logisim. Some were fun, like KITT (the car) from Knight Rider was imitated (well at least the flashing red lights).
 
-## 5. Fitch Proofs
+## 5. Extensions
+I've made a couple of extensions for tampermonkey to make life easier.
+
+## 6. Fitch Proofs
 These have nothing to do with coding, they are logic proofs from my deductive logic class. The format of the files is just weird.
 
-## 6. LHD
+## 7. LHD
 I forgot what this is about. It's a java course representation, but I forgot what this was for, or where the name lhd even comes from.
 
-## 7. Lisp
+## 8. Lisp
 I learnt how to code in [LISP](https://en.wikipedia.org/wiki/Lisp_(programming_language)) for a psychology course. It is a coding language made for lists. The course used coding to run stimulations, like of what happened with the Neanderthals when they went extinct. I only put up the first assignment though, as the rest were mostly the professor's work with a couple of my own optimizations. 
 
-## 8. Waldo
+## 9. Waldo
 This is an another assembly MIPS code bit. However I know what it does so it was put in a different folder. It compares bits in an image of your typical waldo puzzle, with an image of Waldo. It then highlights waldo if he is found in green.
